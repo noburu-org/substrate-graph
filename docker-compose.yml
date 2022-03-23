@@ -48,7 +48,7 @@ services:
   #
 
   archive:
-    image: 2075/archiver-substrate:latest
+    image: toolhippie/archiver:latest
     container_name: archiver
     restart: unless-stopped
     command: ["-vv", "--config", "${ARCHIVER_CONFIG}", "--spec", "${CHAINSPEC}"]
@@ -65,14 +65,16 @@ services:
       - backend
 
   substrate:
-    image: parity/substrate:latest
+    image: opentensorfdn/subtensor:latest
     container_name: substrate
     restart: unless-stopped
+    environment:
+      - CARGO_HOME=/var/www/node-subtensor/.cargo
     ports:
       - 30333:30333
       - 9933:9933
       - 9944:9944
-    command: ["--chain", "${CHAINSPEC}", "--base-path", "/data", "--name", "${NODE_NAME}", "--pruning", "archive", "--alice", "--validator", "--unsafe-rpc-external", "--unsafe-ws-external", "--rpc-cors", "all"]
+    command: bash -c "/usr/local/bin/node-subtensor --base-path /data --chain ${CHAINSPEC} --rpc-external --ws-external --rpc-cors all --no-mdns --ws-max-connections 1000 --in-peers 500 --out-peers 500"
     volumes:
       - ./config:/config
       - ./data/substrate:/data

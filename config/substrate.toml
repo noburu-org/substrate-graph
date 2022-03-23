@@ -2,7 +2,7 @@
 db_path = "/archive/data"
 
 # URL to chain running in --pruning=archive
-rpc_url = "ws://substrate:9944"
+rpc_url = "ws://147.182.165.158:9944"
 
 # How much should the read-only database keep in cache (MB) (required)
 cache_size = 128
