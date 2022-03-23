@@ -51,7 +51,7 @@ services:
     image: toolhippie/archiver:latest
     container_name: archiver
     restart: unless-stopped
-    command: ["-vv", "--config", "${ARCHIVER_CONFIG}", "--spec", "${CHAINSPEC}"]
+    command: ["--config", "${ARCHIVER_CONFIG}", "--spec", "${CHAINSPEC}"]
     volumes:
       - ./config:/config
       - ./data/substrate/chains/dev/db:/archive/data
