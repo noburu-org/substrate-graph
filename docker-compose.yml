@@ -48,10 +48,12 @@ services:
   #
 
   archive:
-    image: toolhippie/archiver:latest
+    build:
+      context: .
+      dockerfile: archiver.Dockerfile
     container_name: archiver
     restart: unless-stopped
-    command: ["--config", "${ARCHIVER_CONFIG}", "--spec", "${CHAINSPEC}"]
+    command: ["./target/release/polkadot-archive", "-vv", "--config", "${ARCHIVER_CONFIG}", "--spec", "${CHAINSPEC}"]
     volumes:
       - ./config:/config
       - ./data/substrate/chains/dev/db:/archive/data
@@ -74,7 +76,7 @@ services:
       - 30333:30333
       - 9933:9933
       - 9944:9944
-    command: bash -c "/usr/local/bin/node-subtensor --base-path /data --chain ${CHAINSPEC} --rpc-external --ws-external --rpc-cors all --no-mdns --ws-max-connections 1000 --in-peers 500 --out-peers 500"
+    command: bash -c "/usr/local/bin/node-subtensor --base-path /data --chain ${CHAINSPEC} --pruning archive --rpc-external --ws-external --rpc-cors all --no-mdns --ws-max-connections 1000 --in-peers 500 --out-peers 500"
     volumes:
       - ./config:/config
       - ./data/substrate:/data
