@@ -3,6 +3,7 @@ FROM alpine:latest
 RUN apk add \
     bash \
     ca-certificates \
+    build-essential \
     curl \
     git \
     openssl \
